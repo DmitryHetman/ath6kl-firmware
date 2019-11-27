@@ -1,0 +1,17 @@
+0
+￼
+This doesn't answer your question, and I can't help you unfortunately, but I was able to install Manjaro 32 on a 5130 of mine that was running Windows 10 initially. However, there are problems with wifi working out of the box and many people have been trying to get it to work. I came across the solution, and I think it's a good idea to put it here since you will probably need it later on.
+
+Download the ath6kl driver and then extract the hw3.0 and hw1.3 folders and place it in /lib/firmware/ath6k/AR6004/ overriding the folders that may already be there. That worked well enough for me.
+
+I found the solution from this Ubuntu forum post, and it also says the following:
+
+Also needed is to tell the ath6kl driver that it can support the chip with SDIO id 0271:0418. It is a line like:
+
+{SDIO_DEVICE(MANUFACTURER_CODE, (MANUFACTURER_ID_AR6004_BASE | 0x18))},
+
+you have to add to the struct "static const struct sdio_device_id ath6kl_sdio_devices[]" in the file sdio.c of the ath6kl driver so it will handle the device.
+
+However, I did not need to do this.
+https://github.com/qca/ath6kl-firmware
+https://ubuntuforums.org/showthread.php?t=2187204&page=9&p=13103443#post13103443
